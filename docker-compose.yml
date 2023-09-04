@@ -11,6 +11,7 @@ services:
       MYSQL_DATABASE: todo
       MYSQL_USER: docker
       MYSQL_PASSWORD: docker
+      TZ: 'Asia/Tokyo'
     volumes:
       - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
       - ./docker/db/sql:/docker-entrypoint-initdb.d
