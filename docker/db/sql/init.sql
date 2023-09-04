@@ -7,4 +7,5 @@ CREATE TABLE IF NOT EXISTS `todo` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO todo(name) values('掃除をする');
+INSERT INTO todo(name) values('トイレ掃除をする');
+INSERT INTO todo(name) values('お風呂掃除をする');

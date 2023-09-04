@@ -14,9 +14,6 @@ docker-compose up -d
 
 // Check Docker startup
 docker ps
-
-// Init Database
-./init-mysql.sh
 ```
 
 ## MySQL 
