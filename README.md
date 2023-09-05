@@ -1,11 +1,16 @@
 ## Version
-play_version: 2.8.19
+play: 2.8.19
 
-scala_version: 2.13.11
+scala: 2.13.11
 
-sbt_version: 1.7.2
+sbt: 1.7.2
 
-mysql_version: 8.1.0
+mysql: 8.1.0
+
+// todo 5.2.0にあげてもいいかも
+play_slick: 5.1.0
+
+slick: 2.13
 
 ## Setup
 ```shell
