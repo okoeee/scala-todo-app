@@ -1,17 +1,15 @@
-name := """todo"""
-organization := "com.example"
-
-version := "1.0-SNAPSHOT"
-
-lazy val root = (project in file(".")).enablePlugins(PlayScala)
-
-scalaVersion := "2.13.11"
-
-libraryDependencies += guice
-libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0" % Test
-
-// Adds additional packages into Twirl
-//TwirlKeys.templateImports += "com.example.controllers._"
-
-// Adds additional packages into conf/routes
-// play.sbt.routes.RoutesKeys.routesImport += "com.example.binders._"
+lazy val root = (project in file("."))
+  .enablePlugins(PlayScala)
+  .settings(
+    name := """todo""",
+    organization := "com.example",
+    version := "1.0-SNAPSHOT",
+    scalaVersion := "2.13.11",
+    libraryDependencies ++= Seq(
+      guice,
+      "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0" % Test,
+      "mysql" % "mysql-connector-java" % "8.0.33",
+      "com.typesafe.play" %% "play-slick" % "5.1.0",
+      "com.typesafe.play" %% "play-slick-evolutions" % "5.1.0"
+    )
+  )
