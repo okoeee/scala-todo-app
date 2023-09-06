@@ -1,16 +1,10 @@
 ## Version
-play: 2.8.19
-
-scala: 2.13.11
-
-sbt: 1.7.2
-
-mysql: 8.1.0
-
-// todo 5.2.0にあげてもいいかも
-play_slick: 5.1.0
-
-slick: 2.13
+- play: 2.8.19 
+- scala: 2.13.11 
+- sbt: 1.7.2 
+- mysql: 8.1.0 
+- play_slick: 5.1.0 
+- slick: 2.13
 
 ## Setup
 ```shell
@@ -22,6 +16,5 @@ docker ps
 ```
 
 ## MySQL 
-MYSQL_USER: docker
-
-MYSQL_PASSWORD: docker
+- MYSQL_USER: docker 
+- MYSQL_PASSWORD: docker
