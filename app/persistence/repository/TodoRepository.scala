@@ -6,13 +6,13 @@ import slick.jdbc.JdbcProfile
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
+import domain.todo.Todo
+
 // todo 後で移動
-case class Todo(
-  // todo ひとまずLong型に
-  id: Long,
-  name: String
-)
-class TodoRepository @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(implicit executionContext: ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile] {
+class TodoRepository @Inject()(
+  protected val dbConfigProvider: DatabaseConfigProvider)(
+  implicit executionContext: ExecutionContext)
+  extends HasDatabaseConfigProvider[JdbcProfile] {
   import profile.api._
 
   private val Todos = TableQuery[TodosTable]
