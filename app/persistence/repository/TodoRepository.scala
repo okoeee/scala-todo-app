@@ -1,12 +1,11 @@
 package persistence.repository
 
+import domain.model.todo.Todo
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
-
-import domain.todo.Todo
 
 // todo 後で移動
 class TodoRepository @Inject()(

@@ -1,6 +1,6 @@
 package controllers
 
-import persistence.repository.TodoRepository
+import domain.repository.TodoRepository
 
 import javax.inject._
 import play.api.mvc._
