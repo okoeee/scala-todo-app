@@ -22,8 +22,11 @@ class TodoRepositoryImpl @Inject()(
   // todo 後で移動
   private class TodosTable(tag: Tag) extends Table[Todo](tag, "todo") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-    def name = column[String]("name")
-    def * = (id, name) <> (Todo.tupled, Todo.unapply _)
+    def categoryId = column[Long]("category_id")
+    def title = column[String]("title")
+    def body = column[String]("body")
+    def state = column[Int]("state")
+    def * = (id, categoryId, title, body, state) <> (Todo.tupled, Todo.unapply)
   }
 
 }
