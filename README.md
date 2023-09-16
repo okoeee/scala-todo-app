@@ -4,7 +4,7 @@
 - sbt: 1.7.2 
 - mysql: 8.1.0 
 - play_slick: 5.1.0 
-- slick: 2.13
+- slick: 3.4.1
 
 ## Setup
 ```shell
