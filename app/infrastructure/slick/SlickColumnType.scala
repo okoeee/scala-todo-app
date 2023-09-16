@@ -3,8 +3,6 @@ package infrastructure.slick
 import domain.model.todo.TodoStatus
 import slick.jdbc.MySQLProfile.api._
 
-import scala.reflect.ClassTag
-
 // todo 後で移動
 trait EnumStatus {
   val code: Short
