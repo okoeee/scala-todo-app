@@ -1,9 +1,10 @@
 package infrastructure.repositoryimpl
 
-import domain.model.todo.Todo
+import domain.model.todo.{Todo, TodoStatus}
 import domain.repository.TodoRepository
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
+import slick.lifted.MappedToBase.mappedToIsomorphism
 
 import javax.inject.Inject
 import scala.concurrent.Future
@@ -25,7 +26,7 @@ class TodoRepositoryImpl @Inject()(
     def categoryId = column[Long]("category_id")
     def title = column[String]("title")
     def body = column[String]("body")
-    def state = column[Int]("state")
+    def state = column[TodoStatus]("state")
     def * = (id, categoryId, title, body, state) <> (Todo.tupled, Todo.unapply)
   }
 
