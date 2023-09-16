@@ -1,6 +1,6 @@
 package domain.model.todo
 
-import infrastructure.slick.EnumStatus
+import domain.typeinterface.EnumStatus
 
 case class Todo(
   // todo ひとまずLong型に

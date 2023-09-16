@@ -1,13 +1,8 @@
 package infrastructure.slick
 
 import domain.model.todo.TodoStatus
+import domain.typeinterface.EnumStatus
 import slick.jdbc.MySQLProfile.api._
-
-// todo 後で移動
-trait EnumStatus {
-  val code: Short
-  val values: Set[_ <: EnumStatus]
-}
 
 trait SlickColumnType {
 
