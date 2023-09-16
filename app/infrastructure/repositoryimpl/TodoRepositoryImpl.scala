@@ -5,7 +5,6 @@ import domain.repository.TodoRepository
 import infrastructure.slick.SlickColumnType
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
-import slick.lifted.MappedToBase.mappedToIsomorphism
 
 import javax.inject.Inject
 import scala.concurrent.Future

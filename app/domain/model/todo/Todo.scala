@@ -1,9 +1,6 @@
 package domain.model.todo
 
 import infrastructure.slick.EnumStatus
-import slick.ast.BaseTypedType
-import slick.jdbc.JdbcType
-import slick.jdbc.MySQLProfile.api._
 
 case class Todo(
   // todo ひとまずLong型に

@@ -14,7 +14,10 @@ class HomeController @Inject()(
 ) extends BaseController {
 
   def index() = Action { implicit req: Request[AnyContent] =>
-    todoRepository.all.map(todos => println(todos))
+    todoRepository.all.map(todos => println(s"""
+        |--------
+        |$todos
+        |""".stripMargin))
     Ok(views.html.index())
   }
 
