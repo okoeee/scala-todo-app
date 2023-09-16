@@ -1,5 +1,6 @@
 package domain.model.todo
 
+import infrastructure.slick.EnumStatus
 import slick.ast.BaseTypedType
 import slick.jdbc.JdbcType
 import slick.jdbc.MySQLProfile.api._
@@ -16,13 +17,10 @@ case class Todo(
 sealed abstract class TodoStatus(
   val code: Short,
   val name: String
-)
+) extends EnumStatus {
+  override val values: Set[TodoStatus] = TodoStatus.values
+}
 object TodoStatus {
-
-  implicit val todoStatusColumnType: JdbcType[TodoStatus] with BaseTypedType[TodoStatus] = MappedColumnType.base[TodoStatus, Short](
-    ts => ts.code,
-    s => TodoStatus.values.find(_.code == s).getOrElse(throw new IllegalArgumentException(s"Unknown code: $s"))
-  )
 
   case object NOT_STARTED extends TodoStatus(code = 0, name = "未着手")
   case object IN_PROGRESS extends TodoStatus(code = 1, name = "進行中")

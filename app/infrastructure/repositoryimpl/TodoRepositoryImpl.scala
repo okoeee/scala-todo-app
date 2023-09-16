@@ -2,6 +2,7 @@ package infrastructure.repositoryimpl
 
 import domain.model.todo.{Todo, TodoStatus}
 import domain.repository.TodoRepository
+import infrastructure.slick.SlickColumnType
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 import slick.lifted.MappedToBase.mappedToIsomorphism
@@ -13,7 +14,8 @@ class TodoRepositoryImpl @Inject()(
   protected val dbConfigProvider: DatabaseConfigProvider)(
   )
   extends HasDatabaseConfigProvider[JdbcProfile]
-  with TodoRepository {
+  with TodoRepository
+  with SlickColumnType {
   import profile.api._
 
   private val Todos = TableQuery[TodosTable]
