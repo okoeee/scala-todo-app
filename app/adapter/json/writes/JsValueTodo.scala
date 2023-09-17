@@ -1,4 +1,4 @@
-package adapter.json
+package adapter.json.writes
 
 import domain.model.todo.{Todo, TodoStatus}
 import play.api.libs.json.{Json, Writes}
