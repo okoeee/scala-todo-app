@@ -4,11 +4,11 @@ import domain.typeinterface.EnumStatus
 
 case class Todo(
   // todo ひとまずLong型に
-  id: Long,
+  id:         Long,
   categoryId: Long,
-  title: String,
-  body: String,
-  state: TodoStatus
+  title:      String,
+  body:       String,
+  state:      TodoStatus
 )
 
 sealed abstract class TodoStatus(

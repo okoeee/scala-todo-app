@@ -10,8 +10,8 @@ import play.api.mvc._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 @Singleton
-class TodoController @Inject()(
-  todoRepository: TodoRepository,
+class TodoController @Inject() (
+  todoRepository:           TodoRepository,
   val controllerComponents: ControllerComponents
 ) extends BaseController {
 

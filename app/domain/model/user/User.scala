@@ -1,6 +1,6 @@
 package domain.model.user
 
 case class User(
-  id: Long,
+  id:   Long,
   name: String
 )

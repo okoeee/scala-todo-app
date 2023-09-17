@@ -5,11 +5,11 @@ import play.api.libs.json.{Json, Writes}
 
 case class JsValueTodo(
   // todo ひとまずLong型に
-  id: Long,
+  id:         Long,
   categoryId: Long,
-  title: String,
-  body: String,
-  state: TodoStatus
+  title:      String,
+  body:       String,
+  state:      TodoStatus
 )
 object JsValueTodo {
 

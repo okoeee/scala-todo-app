@@ -9,10 +9,10 @@ import slick.jdbc.JdbcProfile
 import javax.inject.Inject
 import scala.concurrent.Future
 
-class TodoRepositoryImpl @Inject()(
-  protected val dbConfigProvider: DatabaseConfigProvider)(
-  )
-  extends HasDatabaseConfigProvider[JdbcProfile]
+class TodoRepositoryImpl @Inject() (
+  protected val dbConfigProvider: DatabaseConfigProvider
+)(
+) extends HasDatabaseConfigProvider[JdbcProfile]
   with TodoRepository
   with SlickColumnType {
   import profile.api._
