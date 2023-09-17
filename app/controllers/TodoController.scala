@@ -1,6 +1,8 @@
 package controllers
 
+import adapter.json.JsValueTodo
 import domain.repository.TodoRepository
+import play.api.libs.json.Json
 
 import javax.inject._
 import play.api.mvc._
@@ -13,12 +15,13 @@ class TodoController @Inject()(
   val controllerComponents: ControllerComponents
 ) extends BaseController {
 
-  def index() = Action { implicit req: Request[AnyContent] =>
-    todoRepository.all.map(todos => println(s"""
-        |--------
-        |$todos
-        |""".stripMargin))
-    Ok(views.html.index())
+  def index(): Action[AnyContent] = Action.async { implicit req =>
+    for {
+      todoList <- todoRepository.all
+      jsValueTodoList = todoList.map(todo => JsValueTodo(todo))
+    } yield {
+      Ok(Json.toJson(jsValueTodoList))
+    }
   }
 
 }
