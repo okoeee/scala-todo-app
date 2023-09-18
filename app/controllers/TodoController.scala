@@ -4,6 +4,7 @@ import adapter.json._
 import adapter.json.reads.JsValueTodo.toTodo
 import cats.data.EitherT
 import controllers.helpers.FormHelper
+import controllers.mvc.ImplicitConverter
 import domain.repository.TodoRepository
 import play.api.libs.json.{JsError, JsValue, Json}
 
@@ -17,18 +18,8 @@ import scala.concurrent.Future
 class TodoController @Inject() (
   todoRepository:           TodoRepository,
   val controllerComponents: ControllerComponents
-) extends BaseController {
-
-  implicit def convertEitherToResult(f: Either[Result, Result]): Result =
-    f match {
-      case Right(r) => r
-      case Left(l)  => l
-    }
-
-  implicit def convertEitherTtoResult(
-    f: EitherT[Future, Result, Result]
-  ): Future[Result] =
-    f.valueOr(v => v)
+) extends BaseController
+  with ImplicitConverter {
 
   def index(): Action[AnyContent] = Action.async { implicit req =>
     for {
