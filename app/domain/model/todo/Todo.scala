@@ -24,4 +24,7 @@ object TodoStatus {
   case object COMPLETED extends TodoStatus(code = 2, name = "完了")
 
   val values: Set[TodoStatus] = Set(NOT_STARTED, IN_PROGRESS, COMPLETED)
+
+  def fromShort(code: Short): TodoStatus =
+    TodoStatus.values.find(_.code == code).getOrElse(NOT_STARTED)
 }
