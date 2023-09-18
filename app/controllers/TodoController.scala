@@ -1,6 +1,8 @@
 package controllers
 
 import adapter.json._
+import adapter.json.reads.JsValueTodo.toTodo
+import controllers.helpers.FormHelper
 import domain.repository.TodoRepository
 import play.api.libs.json.{JsError, JsValue, Json}
 
@@ -26,18 +28,18 @@ class TodoController @Inject() (
   }
 
   def post: Action[JsValue] = Action.async(parse.json) { implicit req =>
-    req.body
-      .validate[reads.JsValueTodo]
-      .fold(
-        errors => {
-          val errorMsg = JsError.toJson(errors).toString
-          Future.successful(BadRequest(Json.obj("message" -> errorMsg)))
-        },
-        todoData => {
-          println(todoData)
-          Future.successful(Ok(Json.obj("message" -> "success")))
-        }
-      )
+    val jsValueTodo = for {
+      jsValueTodo <- FormHelper.fromRequest[reads.JsValueTodo]
+    } yield jsValueTodo
+    jsValueTodo match {
+      case Right(jsValueTodo)   =>
+        todoRepository
+          .insert(toTodo(jsValueTodo))
+          .map(_ => {
+            Ok(Json.obj("message" -> "sucess"))
+          })
+      case Left(result: Result) => Future.successful(result)
+    }
   }
 
 }
