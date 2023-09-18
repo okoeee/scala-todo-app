@@ -1,4 +1,4 @@
-package controllers.helpers
+package adapter.controllers.helpers
 
 import play.api.mvc.{Request, Result}
 import play.api.libs.json.{JsError, JsValue, Reads}

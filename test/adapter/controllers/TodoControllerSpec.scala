@@ -1,4 +1,4 @@
-package controllers
+package adapter.controllers
 
 import org.scalatestplus.play._
 import org.scalatestplus.play.guice._

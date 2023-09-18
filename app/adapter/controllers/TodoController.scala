@@ -1,16 +1,15 @@
-package controllers
+package adapter.controllers
 
+import adapter.controllers.helpers.FormHelper
+import adapter.controllers.mvc.ImplicitConverter
 import adapter.json._
 import adapter.json.reads.JsValueTodo.toTodo
 import cats.data.EitherT
-import controllers.helpers.FormHelper
-import controllers.mvc.ImplicitConverter
 import domain.repository.TodoRepository
-import play.api.libs.json.{JsError, JsValue, Json}
-
-import javax.inject._
+import play.api.libs.json.{JsValue, Json}
 import play.api.mvc._
 
+import javax.inject._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 

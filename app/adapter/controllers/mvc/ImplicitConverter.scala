@@ -1,4 +1,4 @@
-package controllers.mvc
+package adapter.controllers.mvc
 
 import cats.data.EitherT
 import play.api.mvc.Result
