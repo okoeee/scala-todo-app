@@ -2,6 +2,7 @@ package controllers
 
 import adapter.json._
 import adapter.json.reads.JsValueTodo.toTodo
+import cats.data.EitherT
 import controllers.helpers.FormHelper
 import domain.repository.TodoRepository
 import play.api.libs.json.{JsError, JsValue, Json}
@@ -18,6 +19,17 @@ class TodoController @Inject() (
   val controllerComponents: ControllerComponents
 ) extends BaseController {
 
+  implicit def convertEitherToResult(f: Either[Result, Result]): Result =
+    f match {
+      case Right(r) => r
+      case Left(l)  => l
+    }
+
+  implicit def convertEitherTtoResult(
+    f: EitherT[Future, Result, Result]
+  ): Future[Result] =
+    f.valueOr(v => v)
+
   def index(): Action[AnyContent] = Action.async { implicit req =>
     for {
       todoList <- todoRepository.all
@@ -28,17 +40,14 @@ class TodoController @Inject() (
   }
 
   def post: Action[JsValue] = Action.async(parse.json) { implicit req =>
-    val jsValueTodo = for {
+    val param = for {
       jsValueTodo <- FormHelper.fromRequest[reads.JsValueTodo]
     } yield jsValueTodo
-    jsValueTodo match {
-      case Right(jsValueTodo)   =>
-        todoRepository
-          .insert(toTodo(jsValueTodo))
-          .map(_ => {
-            Ok(Json.obj("message" -> "sucess"))
-          })
-      case Left(result: Result) => Future.successful(result)
+
+    EitherT.fromEither[Future](param) semiflatMap { jsValueTodo =>
+      for {
+        _ <- todoRepository.insert(toTodo(jsValueTodo))
+      } yield NoContent
     }
   }
 
