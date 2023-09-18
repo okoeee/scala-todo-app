@@ -21,7 +21,7 @@ class TodoRepositoryImpl @Inject() (
 
   override def all: Future[Seq[Todo]] = db.run(Todos.result)
 
-  def insert(todo: Todo): Future[Int] = db.run(Todos += todo)
+  override def insert(todo: Todo): Future[Int] = db.run(Todos += todo)
 
   // todo 後で移動
   private class TodosTable(tag: Tag) extends Table[Todo](tag, "todo") {
