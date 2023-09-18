@@ -5,6 +5,7 @@
 - mysql: 8.1.0 
 - play_slick: 5.1.0 
 - slick: 3.4.1
+- cats-core: 2.10.0 
 
 ## Setup
 ```shell
