@@ -6,7 +6,19 @@ CREATE TABLE `user` (
   `updated_at` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `created_at` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `key01` (`email`)
+  UNIQUE KEY `email_unique` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `session` (
+  `id`          BIGINT       unsigned NOT NULL AUTO_INCREMENT,
+  `user_id`     BIGINT       unsigned NOT NULL,
+  `token`       VARCHAR(512) NOT NULL,
+  `expiry_date` TIMESTAMP    NOT NULL,
+  `updated_at`  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at`  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `token_unique` (`token`),
+  FOREIGN KEY (`user_id`) REFERENCES user(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `category` (
