@@ -30,13 +30,16 @@ class TodoController @Inject() (
   }
 
   def post: Action[JsValue] = Action.async(parse.json) { implicit req =>
+    // todo 仮の値
+    val userId = 1
+
     val param = for {
       jsValueTodo <- FormHelper.fromRequest[reads.JsValueTodo]
     } yield jsValueTodo
 
     EitherT.fromEither[Future](param) semiflatMap { jsValueTodo =>
       for {
-        _ <- todoRepository.insert(toTodo(jsValueTodo))
+        _ <- todoRepository.insert(toTodo(userId: Long, jsValueTodo))
       } yield NoContent
     }
   }

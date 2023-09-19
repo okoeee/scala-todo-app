@@ -5,6 +5,7 @@ import domain.typeinterface.EnumStatus
 case class Todo(
   // todo ひとまずLong型に
   id:         Long,
+  userId:     Long,
   categoryId: Long,
   title:      String,
   body:       String,
