@@ -3,14 +3,18 @@ package adapter.controllers
 import adapter.controllers.helpers.FormHelper
 import adapter.controllers.mvc.ImplicitConverter
 import adapter.json.reads.JsValueLogin
+import cats.data.EitherT
+import domain.repository.UserRepository
 import play.api.libs.json.Json
 import play.api.mvc.{BaseController, ControllerComponents}
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
 
 @Singleton
 class AuthController @Inject() (
+  userRepository:           UserRepository,
   val controllerComponents: ControllerComponents
 ) extends BaseController
   with ImplicitConverter {
@@ -19,10 +23,17 @@ class AuthController @Inject() (
     // reqのbodyを調べて、emailとpasswordを取得
     val param = for {
       jsValueLogin <- FormHelper.fromRequest[JsValueLogin]
-    } yield jsValueLogin
+    } yield (jsValueLogin.email, jsValueLogin.password)
 
-    // UserRepositoryからemailとpasswordが一致するユーザーを検索
-    Future.successful(Ok(Json.obj("message" -> "success")))
+    EitherT.fromEither[Future](param) semiflatMap { case (email, password) =>
+      (for {
+        Some(user) <- userRepository.findByEmailAndPassword(email, password)
+        // userが存在する場合にtokenを発行して保存
+        // responseにtokenを付与して返す
+      } yield Ok(Json.obj("message" -> "success"))) recover {
+        case _: Exception => Ok(Json.obj("message" -> "failure"))
+      }
+    }
   }
 
 }
