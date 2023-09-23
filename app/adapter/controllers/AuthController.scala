@@ -6,6 +6,7 @@ import adapter.json.reads.JsValueLogin
 import cats.data.EitherT
 import domain.model.usersession.UserSession
 import domain.repository.{UserRepository, UserSessionRepository}
+import domain.service.UserSessionCommandService
 import play.api.libs.json.Json
 import play.api.mvc.{BaseController, ControllerComponents}
 
@@ -17,9 +18,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 @Singleton
 class AuthController @Inject() (
-  userRepository:           UserRepository,
-  userSessionRepository:    UserSessionRepository,
-  val controllerComponents: ControllerComponents
+  userSessionCommandService: UserSessionCommandService,
+  val controllerComponents:  ControllerComponents
 ) extends BaseController
   with ImplicitConverter {
 
@@ -31,16 +31,7 @@ class AuthController @Inject() (
 
     EitherT.fromEither[Future](param) semiflatMap { case (email, password) =>
       (for {
-        // todo passwordのハッシュ化を行う
-        Some(user) <- userRepository.findByEmailAndPassword(email, password)
-        // todo ドメインオブジェクトに移動
-        // tokenの発行
-        // userが存在する場合にtokenを発行して保存
-        token = s"${user.id}-${UUID.randomUUID().toString}"
-        expiryDate = LocalDateTime.now.plusDays(30)
-        _ <- userSessionRepository.insert(
-               UserSession.newUserSession(user.id, token, expiryDate)
-             )
+        token <- userSessionCommandService.login(email, password)
       } yield Ok(Json.obj("message" -> "success"))
         .withSession("sid" -> token)) recover {
         case _: NoSuchElementException =>
