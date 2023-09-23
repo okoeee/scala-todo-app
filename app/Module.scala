@@ -1,6 +1,10 @@
 import com.google.inject.AbstractModule
-import domain.repository.{TodoRepository, UserRepository}
-import infrastructure.repositoryimpl.{TodoRepositoryImpl, UserRepositoryImpl}
+import domain.repository.{TodoRepository, UserRepository, UserSessionRepository}
+import infrastructure.repositoryimpl.{
+  TodoRepositoryImpl,
+  UserRepositoryImpl,
+  UserSessionRepositoryImpl
+}
 
 class Module extends AbstractModule {
   override def configure(): Unit = {
