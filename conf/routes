@@ -1,3 +1,5 @@
+POST /login adapter.controllers.AuthController.login()
+
 GET /todo adapter.controllers.TodoController.index()
 POST /todo adapter.controllers.TodoController.post()
 
