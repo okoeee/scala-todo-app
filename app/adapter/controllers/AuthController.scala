@@ -33,6 +33,7 @@ class AuthController @Inject() (
       (for {
         // todo passwordのハッシュ化を行う
         Some(user) <- userRepository.findByEmailAndPassword(email, password)
+        // todo ドメインオブジェクトに移動
         // tokenの発行
         // userが存在する場合にtokenを発行して保存
         token = s"$user.id-${UUID.randomUUID().toString}"
