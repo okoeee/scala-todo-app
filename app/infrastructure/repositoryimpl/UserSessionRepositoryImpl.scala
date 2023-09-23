@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 import javax.inject.Inject
 import scala.concurrent.Future
 
-class UserSessionRepositoryImpl @Inject()(
+class UserSessionRepositoryImpl @Inject() (
   protected val dbConfigProvider: DatabaseConfigProvider
 ) extends HasDatabaseConfigProvider[JdbcProfile]
   with UserSessionRepository {
@@ -20,11 +20,17 @@ class UserSessionRepositoryImpl @Inject()(
   override def insert(session: UserSession): Future[Int] =
     db.run(Sessions += session)
 
-  private class SessionTable(tag: Tag) extends Table[UserSession](tag, "session") {
+  private class SessionTable(tag: Tag)
+    extends Table[UserSession](tag, "user_session") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def userId = column[Long]("user_id")
     def token = column[String]("token")
     def expiryDate = column[LocalDateTime]("expiry_date")
-    def * = (id, userId, token, expiryDate) <> (UserSession.tupled, UserSession.unapply)
+    def * = (
+      id,
+      userId,
+      token,
+      expiryDate
+    ) <> (UserSession.tupled, UserSession.unapply)
   }
 }

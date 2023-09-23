@@ -9,7 +9,7 @@ CREATE TABLE `user` (
   UNIQUE KEY `email_unique` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `session` (
+CREATE TABLE `user_session` (
   `id`          BIGINT       unsigned NOT NULL AUTO_INCREMENT,
   `user_id`     BIGINT       unsigned NOT NULL,
   `token`       VARCHAR(512) NOT NULL,
