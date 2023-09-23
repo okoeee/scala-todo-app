@@ -4,10 +4,12 @@ import adapter.controllers.helpers.FormHelper
 import adapter.controllers.mvc.ImplicitConverter
 import adapter.json.reads.JsValueLogin
 import cats.data.EitherT
-import domain.repository.UserRepository
+import domain.model.usersession.UserSession
+import domain.repository.{UserRepository, UserSessionRepository}
 import play.api.libs.json.Json
 import play.api.mvc.{BaseController, ControllerComponents}
 
+import java.time.LocalDateTime
 import java.util.UUID
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
@@ -16,6 +18,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 @Singleton
 class AuthController @Inject() (
   userRepository:           UserRepository,
+  userSessionRepository:    UserSessionRepository,
   val controllerComponents: ControllerComponents
 ) extends BaseController
   with ImplicitConverter {
@@ -33,9 +36,14 @@ class AuthController @Inject() (
         // tokenの発行
         // userが存在する場合にtokenを発行して保存
         token = s"$user.id-${UUID.randomUUID().toString}"
-        // responseにtokenを付与して返す
-      } yield Ok(Json.obj("message" -> "success"))) recover {
-        case _: Exception => Ok(Json.obj("message" -> "failure"))
+        expiryDate = LocalDateTime.now.plusDays(30)
+        _ <- userSessionRepository.insert(
+               UserSession.newUserSession(user.id, token, expiryDate)
+             )
+      } yield Ok(Json.obj("message" -> "success"))
+        .withSession("sid" -> token)) recover {
+        case _: NoSuchElementException =>
+          Ok(Json.obj("message" -> "no user exists"))
       }
     }
   }
