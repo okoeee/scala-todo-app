@@ -36,7 +36,7 @@ class AuthController @Inject() (
         // todo ドメインオブジェクトに移動
         // tokenの発行
         // userが存在する場合にtokenを発行して保存
-        token = s"$user.id-${UUID.randomUUID().toString}"
+        token = s"${user.id}-${UUID.randomUUID().toString}"
         expiryDate = LocalDateTime.now.plusDays(30)
         _ <- userSessionRepository.insert(
                UserSession.newUserSession(user.id, token, expiryDate)
