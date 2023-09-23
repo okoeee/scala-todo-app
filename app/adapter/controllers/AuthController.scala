@@ -20,7 +20,6 @@ class AuthController @Inject() (
   with ImplicitConverter {
 
   def login() = Action.async(parse.json) { implicit req =>
-    // reqのbodyを調べて、emailとpasswordを取得
     val param = for {
       jsValueLogin <- FormHelper.fromRequest[JsValueLogin]
     } yield (jsValueLogin.email, jsValueLogin.password)
