@@ -5,8 +5,8 @@ import adapter.controllers.mvc.ImplicitConverter
 import adapter.json.reads.JsValueLogin
 import cats.data.EitherT
 import domain.service.UserSessionCommandService
-import play.api.libs.json.Json
-import play.api.mvc.{BaseController, ControllerComponents}
+import play.api.libs.json.{JsValue, Json}
+import play.api.mvc.{Action, BaseController, ControllerComponents}
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
@@ -19,7 +19,7 @@ class AuthController @Inject() (
 ) extends BaseController
   with ImplicitConverter {
 
-  def login() = Action.async(parse.json) { implicit req =>
+  def login(): Action[JsValue] = Action.async(parse.json) { implicit req =>
     val param = for {
       jsValueLogin <- FormHelper.fromRequest[JsValueLogin]
     } yield (jsValueLogin.email, jsValueLogin.password)
