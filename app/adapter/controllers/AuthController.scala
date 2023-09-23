@@ -4,14 +4,10 @@ import adapter.controllers.helpers.FormHelper
 import adapter.controllers.mvc.ImplicitConverter
 import adapter.json.reads.JsValueLogin
 import cats.data.EitherT
-import domain.model.usersession.UserSession
-import domain.repository.{UserRepository, UserSessionRepository}
 import domain.service.UserSessionCommandService
 import play.api.libs.json.Json
 import play.api.mvc.{BaseController, ControllerComponents}
 
-import java.time.LocalDateTime
-import java.util.UUID
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
