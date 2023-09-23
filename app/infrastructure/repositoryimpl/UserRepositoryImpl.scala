@@ -1,6 +1,6 @@
 package infrastructure.repositoryimpl
 
-import domain.model.user.User
+import domain.model.user.{Password, User}
 import domain.repository.UserRepository
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
@@ -18,7 +18,7 @@ class UserRepositoryImpl @Inject() (
 
   override def findByEmailAndPassword(
     email: String,
-    password: String
+    password: Password
   ): Future[Option[User]] =
     db.run(
       Users
@@ -32,7 +32,7 @@ class UserRepositoryImpl @Inject() (
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def name = column[String]("name")
     def email = column[String]("email")
-    def password = column[String]("password")
+    def password = column[Password]("password")
     def * = (id, name, email, password) <> (User.tupled, User.unapply)
   }
 }

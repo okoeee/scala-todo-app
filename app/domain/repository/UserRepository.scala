@@ -1,12 +1,12 @@
 package domain.repository
 
-import domain.model.user.User
+import domain.model.user.{Password, User}
 
 import scala.concurrent.Future
 
 trait UserRepository {
   def findByEmailAndPassword(
     email: String,
-    password: String
+    password: Password
   ): Future[Option[User]]
 }
