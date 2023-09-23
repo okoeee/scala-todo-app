@@ -31,6 +31,6 @@ class UserSessionRepositoryImpl @Inject() (
       userId,
       token,
       expiryDate
-    ) <> (UserSession.tupled, UserSession.unapply)
+    ) <> ((UserSession.apply _).tupled, UserSession.unapply)
   }
 }
