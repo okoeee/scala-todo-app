@@ -33,7 +33,7 @@ class AuthController @Inject() (
       (for {
         token <- userSessionCommandService.login(email, password)
       } yield Ok(Json.obj("message" -> "success"))
-        .withSession("sid" -> token)) recover {
+        .withSession("sid" -> token.toString)) recover {
         case _: NoSuchElementException =>
           Ok(Json.obj("message" -> "no user exists"))
       }

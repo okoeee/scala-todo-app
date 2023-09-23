@@ -1,7 +1,7 @@
 package domain.service
 
 import domain.model.user.Password
-import domain.model.usersession.UserSession
+import domain.model.usersession.{Token, UserSession}
 import domain.repository.{UserRepository, UserSessionRepository}
 
 import java.time.LocalDateTime
@@ -15,18 +15,14 @@ class UserSessionCommandService @Inject() (
   userSessionRepository: UserSessionRepository
 ) {
 
-  def login(email: String, password: String): Future[String] = {
+  def login(email: String, password: String): Future[Token] = {
     for {
       // todo passwordのハッシュ化を行う
       Some(user) <-
         userRepository.findByEmailAndPassword(email, Password(password))
-      // todo ドメインオブジェクトに移動
-      // tokenの発行
-      // userが存在する場合にtokenを発行して保存
-      token = s"${user.id}-${UUID.randomUUID().toString}"
-      expiryDate = LocalDateTime.now.plusDays(30)
+      token = UserSession.newToken(user.id)
       _ <- userSessionRepository.insert(
-             UserSession.newUserSession(user.id, token, expiryDate)
+             UserSession.newUserSession(user.id, token)
            )
     } yield token
   }

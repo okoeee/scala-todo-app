@@ -1,6 +1,6 @@
 package infrastructure.repositoryimpl
 
-import domain.model.usersession.UserSession
+import domain.model.usersession.{Token, UserSession}
 import domain.repository.UserSessionRepository
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
@@ -24,7 +24,7 @@ class UserSessionRepositoryImpl @Inject() (
     extends Table[UserSession](tag, "user_session") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def userId = column[Long]("user_id")
-    def token = column[String]("token")
+    def token = column[Token]("token")
     def expiryDate = column[LocalDateTime]("expiry_date")
     def * = (
       id,
