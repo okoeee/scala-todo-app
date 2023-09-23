@@ -1,8 +1,8 @@
-package domain.model.session
+package domain.model.usersession
 
 import java.time.LocalDateTime
 
-case class Session(
+case class UserSession(
   id:         Long,
   userId:     Long,
   token:      String,
