@@ -29,7 +29,7 @@ class AuthenticatedAction @Inject() (
     request: Request[A],
     block: (MessagesRequest[A] => Future[Result])
   ): Future[Result] = {
-    request.session.get("user_session") match {
+    request.session.get("token") match {
       case Some(token) =>
         // tokenを検索
         userSessionRepository.findByToken(Token(token)) flatMap {
@@ -37,11 +37,11 @@ class AuthenticatedAction @Inject() (
             block(new MessagesRequest[A](request, messagesApi))
           case None    =>
             // todo ひとまずUnauthorizedに
-            Future(Unauthorized)
+            Future(Unauthorized("token not found in db"))
         }
       case None        =>
         // todo ひとまずUnauthorizedに
-        Future(Unauthorized)
+        Future(Unauthorized("token not found in request"))
     }
   }
 }
