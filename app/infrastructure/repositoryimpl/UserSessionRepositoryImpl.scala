@@ -17,6 +17,8 @@ class UserSessionRepositoryImpl @Inject() (
 
   private val Sessions = TableQuery[SessionTable]
 
+  override def findByToken(token: Token): Future[Option[UserSession]] =
+    db.run(Sessions.filter(_.token === token).result.headOption)
   override def insert(session: UserSession): Future[Int] =
     db.run(Sessions += session)
 
