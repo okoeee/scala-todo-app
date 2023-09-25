@@ -2,7 +2,11 @@ package infrastructure.slick
 
 import domain.model.todo.TodoStatus
 import domain.typeinterface.EnumStatus
+import slick.ast.BaseTypedType
+import slick.jdbc.JdbcType
 import slick.jdbc.MySQLProfile.api._
+
+import java.time.LocalDateTime
 
 trait SlickColumnType {
 
@@ -13,6 +17,13 @@ trait SlickColumnType {
         TodoStatus.values
           .find(_.code == code)
           .getOrElse(throw new IllegalArgumentException("Unknown code"))
+    )
+
+  implicit val localDateTimeMapping
+    : JdbcType[LocalDateTime] with BaseTypedType[LocalDateTime] =
+    MappedColumnType.base[LocalDateTime, java.sql.Timestamp](
+      dateTime => java.sql.Timestamp.valueOf(dateTime),
+      timestamp => timestamp.toLocalDateTime
     )
 
 }
