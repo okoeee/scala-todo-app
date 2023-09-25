@@ -2,6 +2,7 @@ package infrastructure.repositoryimpl
 
 import domain.model.usersession.{Token, UserSession}
 import domain.repository.UserSessionRepository
+import infrastructure.slick.SlickColumnType
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
@@ -12,7 +13,8 @@ import scala.concurrent.Future
 class UserSessionRepositoryImpl @Inject() (
   protected val dbConfigProvider: DatabaseConfigProvider
 ) extends HasDatabaseConfigProvider[JdbcProfile]
-  with UserSessionRepository {
+  with UserSessionRepository
+  with SlickColumnType {
   import profile.api._
 
   private val Sessions = TableQuery[SessionTable]
@@ -27,7 +29,10 @@ class UserSessionRepositoryImpl @Inject() (
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def userId = column[Long]("user_id")
     def token = column[Token]("token")
-    def expiryDate = column[LocalDateTime]("expiry_date")
+    def expiryDate = {
+      column[LocalDateTime]("expiry_date")(localDateTimeMapping)
+    }
+
     def * = (
       id,
       userId,
