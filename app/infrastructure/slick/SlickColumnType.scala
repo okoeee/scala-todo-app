@@ -19,7 +19,8 @@ trait SlickColumnType {
           .getOrElse(throw new IllegalArgumentException("Unknown code"))
     )
 
-  implicit val localDateTimeMapping
+  // todo IDE上でエラーが出るので明示的に渡す。本当はimplicitで渡したい
+  val localDateTimeMapping
     : JdbcType[LocalDateTime] with BaseTypedType[LocalDateTime] =
     MappedColumnType.base[LocalDateTime, java.sql.Timestamp](
       dateTime => java.sql.Timestamp.valueOf(dateTime),
