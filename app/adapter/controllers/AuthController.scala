@@ -7,7 +7,7 @@ import adapter.json.reads.JsValueLogin
 import cats.data.EitherT
 import domain.service.UserSessionCommandService
 import play.api.libs.json.{JsValue, Json}
-import play.api.mvc.{Action, BaseController, ControllerComponents}
+import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents}
 import play.filters.csrf.CSRF
 
 import javax.inject.{Inject, Singleton}
@@ -22,7 +22,7 @@ class AuthController @Inject() (
 ) extends BaseController
   with ImplicitConverter {
 
-  def verify() = authenticatedAction.async { implicit req =>
+  def verify(): Action[AnyContent] = authenticatedAction.async { implicit req =>
     Future(Ok)
   }
 
