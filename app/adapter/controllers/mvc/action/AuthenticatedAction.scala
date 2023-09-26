@@ -36,7 +36,7 @@ class AuthenticatedAction @Inject() (
         // tokenを検索
         userSessionRepository.findByToken(Token(token)) flatMap {
           case Some(userSession: UserSession) =>
-            if (userSession.expiryDate.isBefore(LocalDateTime.now))
+            if (userSession.expiryDate.isAfter (LocalDateTime.now))
               block(new MessagesRequest[A](request, messagesApi))
             else Future(Unauthorized("expired_access_token"))
           case None                           =>
