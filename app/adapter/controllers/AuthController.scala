@@ -8,7 +8,6 @@ import cats.data.EitherT
 import domain.service.UserSessionCommandService
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents}
-import play.filters.csrf.CSRF
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future

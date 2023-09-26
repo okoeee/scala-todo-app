@@ -1,4 +1,6 @@
 GET /verify adapter.controllers.AuthController.verify()
+
+# フロント側を作成したら↓のnoscrfを外し、sameSite="lax"にする
 +nocsrf
 POST /login adapter.controllers.AuthController.login()
 
