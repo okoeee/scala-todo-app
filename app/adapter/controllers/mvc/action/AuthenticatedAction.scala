@@ -1,6 +1,7 @@
 package adapter.controllers.mvc.action
 
-import domain.model.usersession.Token
+import cats.data.OptionT
+import domain.model.usersession.{Token, UserSession}
 import domain.repository.UserSessionRepository
 import play.api.i18n.MessagesApi
 import play.api.mvc.Results.Unauthorized
@@ -14,6 +15,7 @@ import play.api.mvc.{
   Result
 }
 
+import java.time.LocalDateTime
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -30,18 +32,21 @@ class AuthenticatedAction @Inject() (
     block: (MessagesRequest[A] => Future[Result])
   ): Future[Result] = {
     request.session.get("token") match {
+      // todo 以下のコード、わかりやすく書く
       case Some(token) =>
         // tokenを検索
         userSessionRepository.findByToken(Token(token)) flatMap {
-          case Some(_) =>
-            block(new MessagesRequest[A](request, messagesApi))
-          case None    =>
+          case Some(userSession: UserSession) =>
+            if (userSession.expiryDate.isBefore(LocalDateTime.now))
+              block(new MessagesRequest[A](request, messagesApi))
+            else Future(Unauthorized("expired_access_token"))
+          case None                           =>
             // todo ひとまずUnauthorizedに
-            Future(Unauthorized("token not found in db"))
+            Future(Unauthorized("token_not_found_in_db"))
         }
       case None        =>
         // todo ひとまずUnauthorizedに
-        Future(Unauthorized("token not found in request"))
+        Future(Unauthorized("token_not_found_in_session"))
     }
   }
 }
