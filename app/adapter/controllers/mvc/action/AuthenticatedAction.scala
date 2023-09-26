@@ -1,6 +1,5 @@
 package adapter.controllers.mvc.action
 
-import cats.data.OptionT
 import domain.model.usersession.{Token, UserSession}
 import domain.repository.UserSessionRepository
 import play.api.i18n.MessagesApi
