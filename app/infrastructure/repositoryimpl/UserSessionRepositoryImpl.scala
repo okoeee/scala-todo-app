@@ -29,9 +29,8 @@ class UserSessionRepositoryImpl @Inject() (
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def userId = column[Long]("user_id")
     def token = column[Token]("token")
-    def expiryDate = {
+    def expiryDate =
       column[LocalDateTime]("expiry_date")(localDateTimeMapping)
-    }
 
     def * = (
       id,
