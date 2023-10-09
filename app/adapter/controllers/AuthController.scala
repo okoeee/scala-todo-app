@@ -22,7 +22,10 @@ class AuthController @Inject() (
   with ImplicitConverter {
 
   def verify(): Action[AnyContent] = authenticatedAction.async { implicit req =>
-    Future(Ok)
+    CSRF.getToken(req) match {
+      case Some(token) => Future(Ok(Json.obj("token" -> token.value)))
+      case None        => Future(Ok(Json.obj("message" -> "CSRF Token none")))
+    }
   }
 
   def login(): Action[JsValue] = Action.async(parse.json) { implicit req =>
