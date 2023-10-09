@@ -41,4 +41,8 @@ class AuthController @Inject() (
     }
   }
 
+  def logout(): Action[AnyContent] = authenticatedAction.async { implicit req =>
+    Future.successful(Ok.withNewSession)
+  }
+
 }
