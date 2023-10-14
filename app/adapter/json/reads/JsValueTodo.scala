@@ -12,7 +12,7 @@ case class JsValueTodo(
 object JsValueTodo {
   implicit val reads: Reads[JsValueTodo] = Json.reads[JsValueTodo]
 
-  def toTodo(userId: Long, jsValueTodo: JsValueTodo) =
+  def toTodo(userId: Long, jsValueTodo: JsValueTodo): Todo =
     Todo(
       id = 0,
       userId = userId,
