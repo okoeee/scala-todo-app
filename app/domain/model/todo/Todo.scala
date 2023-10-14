@@ -20,9 +20,9 @@ sealed abstract class TodoStatus(
 }
 object TodoStatus {
 
-  case object NOT_STARTED extends TodoStatus(code = 0, name = "未着手")
-  case object IN_PROGRESS extends TodoStatus(code = 1, name = "進行中")
-  case object COMPLETED extends TodoStatus(code = 2, name = "完了")
+  case object NOT_STARTED extends TodoStatus(code = 1, name = "未着手")
+  case object IN_PROGRESS extends TodoStatus(code = 2, name = "進行中")
+  case object COMPLETED extends TodoStatus(code = 3, name = "完了")
 
   val values: Set[TodoStatus] = Set(NOT_STARTED, IN_PROGRESS, COMPLETED)
 
