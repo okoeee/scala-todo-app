@@ -21,6 +21,13 @@ class TodoRepositoryImpl @Inject() (
 
   override def all: Future[Seq[Todo]] = db.run(Todos.result)
 
+  override def findByUserId(userId: Long): Future[Seq[Todo]] =
+    db.run(
+      Todos
+        .filter(_.userId === userId)
+        .result
+    )
+
   override def insert(todo: Todo): Future[Int] = db.run(Todos += todo)
 
   // todo 後で移動
@@ -31,7 +38,14 @@ class TodoRepositoryImpl @Inject() (
     def title = column[String]("title")
     def body = column[String]("body")
     def state = column[TodoStatus]("state")
-    def * = (id, userId, categoryId, title, body, state) <> (Todo.tupled, Todo.unapply)
+    def * = (
+      id,
+      userId,
+      categoryId,
+      title,
+      body,
+      state
+    ) <> (Todo.tupled, Todo.unapply)
   }
 
 }
