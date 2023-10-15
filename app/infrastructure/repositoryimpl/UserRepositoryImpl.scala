@@ -28,6 +28,14 @@ class UserRepositoryImpl @Inject() (
         .headOption
     )
 
+  override def findByUserId(userId: Long): Future[Option[User]] =
+    db.run(
+      Users
+        .filter(_.id === userId)
+        .result
+        .headOption
+    )
+
   private class UserTable(tag: Tag) extends Table[User](tag, "user") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def name = column[String]("name")
