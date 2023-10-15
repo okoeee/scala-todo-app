@@ -2,6 +2,7 @@ package adapter.controllers
 
 import adapter.controllers.helpers.FormHelper
 import adapter.controllers.mvc.ImplicitConverter
+import adapter.controllers.mvc.action.AuthenticatedAction
 import adapter.json._
 import adapter.json.reads.JsValueTodo.toTodo
 import cats.data.EitherT
@@ -15,6 +16,7 @@ import scala.concurrent.Future
 
 @Singleton
 class TodoController @Inject() (
+  authenticatedAction:      AuthenticatedAction,
   todoRepository:           TodoRepository,
   val controllerComponents: ControllerComponents
 ) extends BaseController
@@ -22,6 +24,7 @@ class TodoController @Inject() (
 
   def index(): Action[AnyContent] = Action.async { implicit req =>
     for {
+      // todo userIdでfilterをかける
       todoList <- todoRepository.all
       jsValueTodoList = todoList.map(todo => writes.JsValueTodo(todo))
     } yield {
@@ -29,19 +32,17 @@ class TodoController @Inject() (
     }
   }
 
-  def post: Action[JsValue] = Action.async(parse.json) { implicit req =>
-    // todo 仮の値
-    val userId = 1
+  def post: Action[JsValue] = authenticatedAction.async(parse.json) {
+    implicit req =>
+      val param = for {
+        jsValueTodo <- FormHelper.fromRequest[reads.JsValueTodo]
+      } yield jsValueTodo
 
-    val param = for {
-      jsValueTodo <- FormHelper.fromRequest[reads.JsValueTodo]
-    } yield jsValueTodo
-
-    EitherT.fromEither[Future](param) semiflatMap { jsValueTodo =>
-      for {
-        _ <- todoRepository.insert(toTodo(userId: Long, jsValueTodo))
-      } yield NoContent
-    }
+      EitherT.fromEither[Future](param) semiflatMap { jsValueTodo =>
+        for {
+          _ <- todoRepository.insert(toTodo(req.user.id: Long, jsValueTodo))
+        } yield NoContent
+      }
   }
 
 }
