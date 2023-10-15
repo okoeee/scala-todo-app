@@ -27,7 +27,7 @@ class AuthController @Inject() (
     CSRF.getToken(req) match {
       // todo csrfTokenのJsonを変更
       case Some(token) =>
-        Future(Ok(Json.toJson(JsValueUserState(req.user.id, token.value))))
+        Future(Ok(Json.toJson(JsValueUserState(token.value))))
       case None        => Future(Ok(Json.obj("message" -> "CSRF Token none")))
     }
   }
