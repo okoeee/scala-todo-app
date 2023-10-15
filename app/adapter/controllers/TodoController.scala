@@ -22,10 +22,9 @@ class TodoController @Inject() (
 ) extends BaseController
   with ImplicitConverter {
 
-  def index(): Action[AnyContent] = Action.async { implicit req =>
+  def index(): Action[AnyContent] = authenticatedAction.async { implicit req =>
     for {
-      // todo userIdでfilterをかける
-      todoList <- todoRepository.all
+      todoList <- todoRepository.findByUserId(req.user.id)
       jsValueTodoList = todoList.map(todo => writes.JsValueTodo(todo))
     } yield {
       Ok(Json.toJson(jsValueTodoList))
