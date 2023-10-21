@@ -17,7 +17,7 @@ class UserSessionCommandService @Inject() (
     for {
       // todo passwordのハッシュ化を行う
       Some(user) <-
-        userRepository.findByEmailAndPassword(email, Password(password).encrypt)
+        userRepository.findByEmailAndPassword(email, Password(password))
       token = UserSession.newToken(user.id)
       _ <- userSessionRepository.insert(
              UserSession.newUserSession(user.id, token)

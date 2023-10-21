@@ -4,9 +4,13 @@ import domain.model.user.{Password, User}
 import domain.repository.UserRepository
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
+import com.github.t3hnar.bcrypt._
 
 import javax.inject.Inject
 import scala.concurrent.Future
+import scala.util.Success
+
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class UserRepositoryImpl @Inject() (
   protected val dbConfigProvider: DatabaseConfigProvider
@@ -19,14 +23,23 @@ class UserRepositoryImpl @Inject() (
   override def findByEmailAndPassword(
     email: String,
     password: Password
-  ): Future[Option[User]] =
+  ): Future[Option[User]] = {
+    println(email, password)
     db.run(
       Users
         .filter(_.email === email)
-        .filter(_.password === password)
         .result
         .headOption
-    )
+    ).map { userOpt =>
+      userOpt.map(user => {
+        val passwordFromDB = user.password
+        password.value.isBcryptedSafeBounded(passwordFromDB.value) match {
+          case Success(isExistUser) if isExistUser => user
+          case _                                   => throw new NoSuchElementException()
+        }
+      })
+    }
+  }
 
   override def findByUserId(userId: Long): Future[Option[User]] =
     db.run(
