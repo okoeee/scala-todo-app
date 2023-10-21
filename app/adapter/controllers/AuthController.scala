@@ -26,7 +26,9 @@ class AuthController @Inject() (
   def verify(): Action[AnyContent] = authenticatedAction.async { implicit req =>
     CSRF.getToken(req) match {
       case Some(token) =>
-        Future(Ok(Json.toJson(JsValueUserState(token.value))))
+        Future(
+          Ok(Json.toJson(JsValueUserState(isLoggedIn = true, token.value)))
+        )
       case None        => Future(Ok(Json.obj("message" -> "CSRF Token none")))
     }
   }
