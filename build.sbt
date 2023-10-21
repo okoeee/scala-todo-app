@@ -11,6 +11,7 @@ lazy val root = (project in file("."))
       "mysql" % "mysql-connector-java" % "8.0.33",
       "com.typesafe.play" %% "play-slick" % "5.1.0",
       "com.typesafe.play" %% "play-slick-evolutions" % "5.1.0",
-      "org.typelevel" %% "cats-core" % "2.10.0"
+      "org.typelevel" %% "cats-core" % "2.10.0",
+      "com.github.t3hnar" %% "scala-bcrypt" % "4.3.0"
     )
   )
