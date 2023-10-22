@@ -1,4 +1,4 @@
-INSERT INTO user(id, name, email, password) VALUES (1, 'taro', 'taro@taro.com', 'aaaa');
+INSERT INTO user(id, name, email, password) VALUES (1, 'taro', 'taro@taro.com', '$2a$10$thTkcDVr1hXw8ryvEZqP4eAt5SdxxYL9ERCea0jztQSV5G707/FRW');
 
 INSERT INTO category(user_id, name, color) VALUES (1, 'フロントエンド', 1);
 INSERT INTO category(user_id, name, color) VALUES (1, 'バックエンド', 2);
