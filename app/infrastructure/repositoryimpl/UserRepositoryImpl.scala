@@ -24,7 +24,6 @@ class UserRepositoryImpl @Inject() (
     email: String,
     password: Password
   ): Future[Option[User]] = {
-    println(email, password)
     db.run(
       Users
         .filter(_.email === email)
