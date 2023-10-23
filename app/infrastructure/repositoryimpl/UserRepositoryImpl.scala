@@ -34,7 +34,7 @@ class UserRepositoryImpl @Inject() (
         val passwordFromDB = user.password
         password.value.isBcryptedSafeBounded(passwordFromDB.value) match {
           case Success(isExistUser) if isExistUser => user
-          case _                                   => throw new NoSuchElementException()
+          case _                                   => throw new NoSuchElementException
         }
       })
     }
