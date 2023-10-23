@@ -15,7 +15,6 @@ class UserSessionCommandService @Inject() (
 
   def login(email: String, password: String): Future[Token] = {
     for {
-      // todo passwordのハッシュ化を行う
       Some(user) <-
         userRepository.findByEmailAndPassword(email, Password(password))
       token = UserSession.newToken(user.id)
