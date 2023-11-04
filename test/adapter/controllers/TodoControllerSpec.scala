@@ -12,17 +12,17 @@ class TodoControllerSpec
   with Injecting {
 
   "GET /todo" must {
-    "return json" in {
+    "without session" in {
       val request = FakeRequest(GET, "/todo")
       val response = route(app, request).get
 
-      status(response) mustBe OK
-      contentType(response) mustBe Some("application/json")
+      status(response) mustBe UNAUTHORIZED
+      contentAsString(response) mustBe "token_not_found_in_session"
     }
   }
 
   "POST /todo" must {
-    "return error json" in {
+    "without session" in {
       val request = FakeRequest(POST, "/todo")
         .withJsonBody(
           Json.obj(
@@ -31,8 +31,8 @@ class TodoControllerSpec
         )
       val response = route(app, request).get
 
-      status(response) mustBe 400
-      contentType(response) mustBe Some("application/json")
+      status(response) mustBe UNAUTHORIZED
+      contentAsString(response) mustBe "token_not_found_in_session"
     }
   }
 
