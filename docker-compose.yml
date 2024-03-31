@@ -14,4 +14,7 @@ services:
       TZ: 'Asia/Tokyo'
     volumes:
       - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
+      - mysql-local:/var/lib/mysql
       - ./docker/db/sql:/docker-entrypoint-initdb.d
+volumes:
+  mysql-local:
