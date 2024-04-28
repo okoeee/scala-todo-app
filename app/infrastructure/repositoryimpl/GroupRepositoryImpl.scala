@@ -26,7 +26,7 @@ class GroupRepositoryImpl @Inject() (
         .headOption
     )
 
-  private class GroupTable(tag: Tag) extends Table[Group](tag, "todo") {
+  private class GroupTable(tag: Tag) extends Table[Group](tag, "group") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def name = column[String]("name")
     def * = (
