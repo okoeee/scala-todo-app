@@ -35,6 +35,7 @@ class TodoRepositoryImpl @Inject() (
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def groupId = column[Long]("group_id")
     def categoryId = column[Long]("category_id")
+    def createdUserId = column[Long]("created_user_id")
     def title = column[String]("title")
     def body = column[String]("body")
     def state = column[TodoStatus]("state")
@@ -42,6 +43,7 @@ class TodoRepositoryImpl @Inject() (
       id,
       groupId,
       categoryId,
+      createdUserId,
       title,
       body,
       state

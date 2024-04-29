@@ -37,9 +37,14 @@ class TodoController @Inject() (
         jsValueTodo <- FormHelper.fromRequest[reads.JsValueTodo]
       } yield jsValueTodo
 
+      // todo 変数に置き換え
+      val groupId = 1
+
       EitherT.fromEither[Future](param) semiflatMap { jsValueTodo =>
         for {
-          _ <- todoRepository.insert(toTodo(req.user.id: Long, jsValueTodo))
+          _ <- todoRepository.insert(
+                 toTodo(groupId, req.user.id: Long, jsValueTodo)
+               )
         } yield NoContent
       }
   }
