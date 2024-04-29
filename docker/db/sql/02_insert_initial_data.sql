@@ -12,11 +12,11 @@ INSERT INTO `group_membership` (group_id, user_id)
 VALUES (1, 1);
 
 -- category
-INSERT INTO `category` (id, group_id, name, color) VALUES
-(1, 1, 'フロントエンド', 1),
-(2, 1, 'バックエンド', 2);
+INSERT INTO `category` (id, group_id, created_user_id, name, color) VALUES
+(1, 1, 1, 'フロントエンド', 1),
+(2, 1, 1, 'バックエンド', 2);
 
 -- todo
-INSERT INTO `todo` (id, group_id, category_id, title, body, state) VALUES
-(1, 1, 1, 'UI調節', 'ヘッダーの位置調節', 1),
-(2, 1, 2, 'API', 'Todoを返すAPIを作成', 2);
+INSERT INTO `todo` (id, group_id, created_user_id, category_id, title, body, state) VALUES
+(1, 1, 1, 1, 'UI調節', 'ヘッダーの位置調節', 1),
+(2, 1, 1, 2, 'API', 'Todoを返すAPIを作成', 2);
