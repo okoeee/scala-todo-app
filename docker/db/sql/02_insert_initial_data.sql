@@ -8,8 +8,11 @@ INSERT INTO `user` (id, name, email, password) VALUES
 (2, 'hanako', 'hanako@gmail.com', '$2a$10$thTkcDVr1hXw8ryvEZqP4eAt5SdxxYL9ERCea0jztQSV5G707/FRW');
 
 -- group_membership
-INSERT INTO `group_membership` (group_id, user_id)
-VALUES (1, 1);
+INSERT INTO `group_membership` (group_id, user_id) VALUES
+(1, 1),
+(1, 2)
+;
+
 
 -- category
 INSERT INTO `category` (id, group_id, created_user_id, name, color) VALUES

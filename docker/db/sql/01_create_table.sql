@@ -43,25 +43,28 @@ CREATE TABLE `user_session` (
 
 CREATE TABLE `category` (
   `id`              BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `group_id`        BIGINT UNSIGNED NOT NULL,
+  `group_id`        BIGINT UNSIGNED,
   `created_user_id` BIGINT UNSIGNED,
   `name`            VARCHAR(255) NOT NULL,
   `color`           TINYINT UNSIGNED  NOT NULL,
   `updated_at`      timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `created_at`      timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  INDEX `key01` (`group_id`)
+  FOREIGN KEY (`group_id`)  REFERENCES `group`(`id`) ON DELETE SET NULL,
+  FOREIGN KEY (`created_user_id`)   REFERENCES `user`(`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `todo` (
-  `id`              BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `group_id`        BIGINT UNSIGNED NOT NULL,
-  `created_user_id` BIGINT UNSIGNED,
-  `category_id`     BIGINT UNSIGNED,
-  `title`           VARCHAR(255) NOT NULL,
-  `body`            TEXT,
-  `state`           TINYINT UNSIGNED NOT NULL,
-  `updated_at`      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `created_at`      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  `id`                      BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `group_id`                BIGINT UNSIGNED,
+  `created_user_id`         BIGINT UNSIGNED,
+  `category_id`             BIGINT UNSIGNED,
+  `title`                   VARCHAR(255) NOT NULL,
+  `body`                    TEXT,
+  `state`                   TINYINT UNSIGNED NOT NULL,
+  `updated_at`              TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at`              TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`group_id`)  REFERENCES `group`(`id`) ON DELETE SET NULL,
+  FOREIGN KEY (`created_user_id`)   REFERENCES `user`(`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
