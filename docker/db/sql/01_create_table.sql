@@ -1,23 +1,16 @@
 
+USE `todo`;
+
 CREATE TABLE `group` (
-  `id`         BIGINT       unsigned NOT NULL AUTO_INCREMENT,
+  `id`         BIGINT       UNSIGNED NOT NULL AUTO_INCREMENT,
   `name`       VARCHAR(255) NOT NULL,
   `updated_at` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `created_at` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `group_membership` (
-  `group_id`   BIGINT       NOT NULL,
-  `user_id`    BIGINT       NOT NULL,
-  `updated_at` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `created_at` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  INDEX `key01` (`group_id`),
-  INDEX `key02` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
 CREATE TABLE `user` (
-  `id`         BIGINT       unsigned NOT NULL AUTO_INCREMENT,
+  `id`         BIGINT       UNSIGNED NOT NULL AUTO_INCREMENT,
   `name`       VARCHAR(255) NOT NULL,
   `email`      VARCHAR(255) NOT NULL,
   `password`   VARCHAR(255) NOT NULL,
@@ -25,6 +18,15 @@ CREATE TABLE `user` (
   `created_at` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email_unique` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `group_membership` (
+  `group_id`   BIGINT       UNSIGNED,
+  `user_id`    BIGINT       UNSIGNED,
+  `updated_at` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`group_id`)  REFERENCES `group`(`id`) ON DELETE SET NULL,
+  FOREIGN KEY (`user_id`)   REFERENCES `user`(`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `user_session` (
@@ -36,7 +38,7 @@ CREATE TABLE `user_session` (
   `created_at`  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `token_unique` (`token`),
-  FOREIGN KEY (`user_id`) REFERENCES user(`id`) ON DELETE CASCADE
+  FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `category` (
