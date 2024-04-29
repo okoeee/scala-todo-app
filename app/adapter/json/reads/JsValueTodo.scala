@@ -12,11 +12,16 @@ case class JsValueTodo(
 object JsValueTodo {
   implicit val reads: Reads[JsValueTodo] = Json.reads[JsValueTodo]
 
-  def toTodo(userId: Long, jsValueTodo: JsValueTodo): Todo =
+  def toTodo(
+    groupId: Long,
+    userId: Long,
+    jsValueTodo: JsValueTodo
+  ): Todo =
     Todo(
       id = 0,
-      userId = userId,
+      groupId = groupId,
       categoryId = jsValueTodo.categoryId,
+      createdUserId = userId,
       title = jsValueTodo.title,
       body = jsValueTodo.body,
       state = TodoStatus.fromShort(jsValueTodo.state)

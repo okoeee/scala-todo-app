@@ -21,10 +21,17 @@ class TodoRepositoryImpl @Inject() (
 
   override def all: Future[Seq[Todo]] = db.run(Todos.result)
 
-  override def findByUserId(userId: Long): Future[Seq[Todo]] =
+  override def findByUserId(groupId: Long): Future[Seq[Todo]] =
     db.run(
       Todos
-        .filter(_.userId === userId)
+        .filter(_.groupId === groupId)
+        .result
+    )
+
+  override def filterByGroupId(groupId: Long): Future[Seq[Todo]] =
+    db.run(
+      Todos
+        .filter(_.groupId === groupId)
         .result
     )
 
@@ -33,15 +40,17 @@ class TodoRepositoryImpl @Inject() (
   // todo 後で移動
   private class TodosTable(tag: Tag) extends Table[Todo](tag, "todo") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-    def userId = column[Long]("user_id")
+    def groupId = column[Long]("group_id")
     def categoryId = column[Long]("category_id")
+    def createdUserId = column[Long]("created_user_id")
     def title = column[String]("title")
     def body = column[String]("body")
     def state = column[TodoStatus]("state")
     def * = (
       id,
-      userId,
+      groupId,
       categoryId,
+      createdUserId,
       title,
       body,
       state

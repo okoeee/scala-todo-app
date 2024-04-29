@@ -1,7 +1,25 @@
-INSERT INTO user(id, name, email, password) VALUES (1, 'taro', 'taro@taro.com', '$2a$10$thTkcDVr1hXw8ryvEZqP4eAt5SdxxYL9ERCea0jztQSV5G707/FRW');
+-- group
+INSERT INTO `group` (id, name)
+VALUES (1, 'テストグループ');
 
-INSERT INTO category(user_id, name, color) VALUES (1, 'フロントエンド', 1);
-INSERT INTO category(user_id, name, color) VALUES (1, 'バックエンド', 2);
+-- user
+INSERT INTO `user` (id, name, email, password) VALUES
+(1, 'taro', 'taro@gmail.com', '$2a$10$thTkcDVr1hXw8ryvEZqP4eAt5SdxxYL9ERCea0jztQSV5G707/FRW'),
+(2, 'hanako', 'hanako@gmail.com', '$2a$10$thTkcDVr1hXw8ryvEZqP4eAt5SdxxYL9ERCea0jztQSV5G707/FRW');
 
-INSERT INTO todo(user_id, category_id, title, body, state) VALUES (1, 1, 'UI調節', 'ヘッダーの位置調節', 1);
-INSERT INTO todo(user_id, category_id, title, body, state) VALUES (1, 2, 'API', 'Todoを返すAPIを作成', 2);
+-- group_membership
+INSERT INTO `group_membership` (group_id, user_id) VALUES
+(1, 1),
+(1, 2)
+;
+
+
+-- category
+INSERT INTO `category` (id, group_id, created_user_id, name, color) VALUES
+(1, 1, 1, 'フロントエンド', 1),
+(2, 1, 1, 'バックエンド', 2);
+
+-- todo
+INSERT INTO `todo` (id, group_id, created_user_id, category_id, title, body, state) VALUES
+(1, 1, 1, 1, 'UI調節', 'ヘッダーの位置調節', 1),
+(2, 1, 1, 2, 'API', 'Todoを返すAPIを作成', 2);
