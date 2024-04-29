@@ -1,5 +1,8 @@
 logs
 target
+schemaspy/output
+.metals
+.vscode
 /.bsp
 /.idea
 /.idea_modules
@@ -7,4 +10,3 @@ target
 /.project
 /.settings
 /RUNNING_PID
-schemaspy/output
