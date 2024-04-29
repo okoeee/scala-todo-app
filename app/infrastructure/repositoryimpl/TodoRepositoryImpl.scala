@@ -28,6 +28,13 @@ class TodoRepositoryImpl @Inject() (
         .result
     )
 
+  override def filterByGroupId(groupId: Long): Future[Seq[Todo]] =
+    db.run(
+      Todos
+        .filter(_.groupId === groupId)
+        .result
+    )
+
   override def insert(todo: Todo): Future[Int] = db.run(Todos += todo)
 
   // todo 後で移動

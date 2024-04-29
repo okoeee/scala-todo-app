@@ -24,7 +24,7 @@ class TodoController @Inject() (
 
   def index(): Action[AnyContent] = authenticatedAction.async { implicit req =>
     for {
-      todoList <- todoRepository.findByUserId(req.user.id)
+      todoList <- todoRepository.filterByGroupId(req.user.id)
       jsValueTodoList = todoList.map(todo => writes.JsValueTodo(todo))
     } yield {
       Ok(Json.toJson(jsValueTodoList))

@@ -5,5 +5,6 @@ import domain.model.groupmembership.GroupMembership
 import scala.concurrent.Future
 
 trait GroupMembershipRepository {
+  def findByGroupId(groupId: Long): Future[Option[GroupMembership]]
   def findByUserId(id: Long): Future[Option[GroupMembership]]
 }

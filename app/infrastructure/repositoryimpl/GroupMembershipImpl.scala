@@ -18,6 +18,14 @@ class GroupMembershipImpl @Inject() (
 
   private val GroupMemberships = TableQuery[GroupMembershipTable]
 
+  override def findByGroupId(groupId: Long): Future[Option[GroupMembership]] =
+    db.run(
+      GroupMemberships
+        .filter(_.groupId === groupId)
+        .result
+        .headOption
+    )
+
   override def findByUserId(
     userId: Long
   ): Future[Option[GroupMembership]] =
