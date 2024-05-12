@@ -1,4 +1,5 @@
 ## Version
+- java: 11
 - play: 2.8.19 
 - scala: 2.13.11 
 - sbt: 1.7.2 
@@ -9,11 +10,8 @@
 
 ## Setup
 ```shell
-// Launch Docker
-docker-compose up -d
-
-// Check Docker startup
-docker ps
+// Init MySQL server
+make init
 ```
 
 ## MySQL 
