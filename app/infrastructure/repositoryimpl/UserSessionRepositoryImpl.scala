@@ -24,8 +24,7 @@ class UserSessionRepositoryImpl @Inject() (
   override def insert(session: UserSession): Future[Int] =
     db.run(Sessions += session)
 
-  private class SessionTable(tag: Tag)
-    extends Table[UserSession](tag, "user_session") {
+  private class SessionTable(tag: Tag) extends Table[UserSession](tag, "user_session") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def userId = column[Long]("user_id")
     def token = column[Token]("token")

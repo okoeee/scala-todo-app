@@ -6,21 +6,9 @@ import domain.model.group.Group
 import domain.model.groupmembership.GroupMembership
 import domain.model.user.User
 import domain.model.usersession.{Token, UserSession}
-import domain.repository.{
-  GroupMembershipRepository,
-  UserRepository,
-  UserSessionRepository
-}
+import domain.repository.{GroupMembershipRepository, UserRepository, UserSessionRepository}
 import play.api.mvc.Results.Unauthorized
-import play.api.mvc.{
-  ActionBuilder,
-  AnyContent,
-  BodyParser,
-  PlayBodyParsers,
-  Request,
-  Result,
-  WrappedRequest
-}
+import play.api.mvc.{ActionBuilder, AnyContent, BodyParser, PlayBodyParsers, Request, Result, WrappedRequest}
 
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -50,34 +38,32 @@ class AuthenticatedAction @Inject() (
 
     (groupIdOpt, tokenOpt) match {
       case (Some(groupId), Some(token)) =>
-        val data = for {
-          userSession <- OptionT(
-                           userSessionRepository.findByToken(Token(token))
-                         )
-          user <- OptionT(userRepository.findByUserId(userSession.userId))
-          groupMembership <-
+        val data = (for {
+          userSession <-
             OptionT(
-              groupMembershipRepository.findByGroupId(groupId.value.toLong)
+              userSessionRepository.findByToken(Token(token))
             )
-        } yield (userSession, user, groupMembership)
+          user <-
+            OptionT(userRepository.findByUserId(userSession.userId))
+          groupMembershipSeq <-
+            OptionT.liftF(
+              groupMembershipRepository.filterByGroupId(groupId.value.toLong)
+            )
+        } yield (userSession, user, groupMembershipSeq, groupId.value.toLong)).value
 
         data
-          .semiflatMap {
-            case (
-                  userSession: UserSession,
-                  user: User,
-                  groupMembership: GroupMembership
-                )
-                if userSession.expiryDate.isAfter(
+          .flatMap {
+            case Some((userSession: UserSession, user: User, groupMembershipSeq: Seq[GroupMembership], groupId: Long)) =>
+              if (
+                userSession.expiryDate.isAfter(
                   LocalDateTime.now
-                ) && groupMembership.userId == user.id =>
-              block(new UserRequest[A](groupMembership.groupId, user, request))
-            case _ =>
-              Future.successful(
-                Unauthorized
+                ) && groupMembershipSeq.exists(_.userId == user.id)
               )
+                block(new UserRequest[A](groupId, user, request))
+              else Future.successful(Unauthorized("session_is_expired"))
+            case _                                                                                                     =>
+              Future.successful(Unauthorized("user_not_found"))
           }
-          .getOrElse(Unauthorized)
       case _                            =>
         Future(Unauthorized("token_not_found_in_session"))
     }

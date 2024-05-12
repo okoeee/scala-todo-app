@@ -36,8 +36,14 @@ class GroupMembershipImpl @Inject() (
         .headOption
     )
 
-  private class GroupMembershipTable(tag: Tag)
-    extends Table[GroupMembership](tag, "group_membership") {
+  override def filterByGroupId(groupId: Long): Future[Seq[GroupMembership]] =
+    db.run(
+      GroupMemberships
+        .filter(_.groupId === groupId)
+        .result
+    )
+
+  private class GroupMembershipTable(tag: Tag) extends Table[GroupMembership](tag, "group_membership") {
     def groupId = column[Long]("group_id", O.PrimaryKey, O.AutoInc)
     def userId = column[Long]("user_id")
     def * = (

@@ -1,5 +1,6 @@
 package domain.service
 
+import cats.data.OptionT
 import domain.model.user.Password
 import domain.model.usersession.{Token, UserSession}
 import domain.repository.{UserRepository, UserSessionRepository}
@@ -13,15 +14,17 @@ class UserSessionCommandService @Inject() (
   userSessionRepository: UserSessionRepository
 ) {
 
-  def login(email: String, password: String): Future[Token] = {
-    for {
-      Some(user) <-
-        userRepository.findByEmailAndPassword(email, Password(password))
+  def login(email: String, password: String): Future[Option[Token]] = {
+    (for {
+      user <-
+        OptionT(userRepository.findByEmailAndPassword(email, Password(password)))
       token = UserSession.newToken(user.id)
-      _ <- userSessionRepository.insert(
-             UserSession.newUserSession(user.id, token)
+      _ <- OptionT.liftF(
+             userSessionRepository.insert(
+               UserSession.newUserSession(user.id, token)
+             )
            )
-    } yield token
+    } yield token).value
   }
 
 }
