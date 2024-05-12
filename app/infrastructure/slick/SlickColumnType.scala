@@ -20,8 +20,7 @@ trait SlickColumnType {
     )
 
   // todo IDE上でエラーが出るので明示的に渡す。本当はimplicitで渡したい
-  val localDateTimeMapping
-    : JdbcType[LocalDateTime] with BaseTypedType[LocalDateTime] =
+  val localDateTimeMapping: JdbcType[LocalDateTime] with BaseTypedType[LocalDateTime] =
     MappedColumnType.base[LocalDateTime, java.sql.Timestamp](
       dateTime => java.sql.Timestamp.valueOf(dateTime),
       timestamp => timestamp.toLocalDateTime
