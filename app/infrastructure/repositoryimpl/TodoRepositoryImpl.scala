@@ -37,6 +37,16 @@ class TodoRepositoryImpl @Inject() (
 
   override def insert(todo: Todo): Future[Int] = db.run(Todos += todo)
 
+  override def selectByPlainQuery(userId: Long, body: String): Future[Vector[(String, Int)]] = {
+    db.run(
+      sql"""
+            select *
+            from todo
+            where body = '$body'
+          """.as[(String, Int)]
+    )
+  }
+
   // todo 後で移動
   private class TodosTable(tag: Tag) extends Table[Todo](tag, "todo") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)

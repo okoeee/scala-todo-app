@@ -41,6 +41,12 @@ class TodoController @Inject() (
 
     EitherT.fromEither[Future](param) semiflatMap { jsValueTodo =>
       for {
+        todos <- todoRepository.selectByPlainQuery(1L, jsValueTodo.body)
+        _ <- Future.successful {
+               println(s"""
+              |todos is: ${todos}
+              |""".stripMargin)
+             }
         _ <- todoRepository.insert(
                toTodo(groupId, req.user.id: Long, jsValueTodo)
              )
